@@ -1,0 +1,9 @@
+name: Ajax facet filters
+type: module
+description: 'Ajax facet filters'
+package: Search Toolkit
+core: 8.x
+dependencies:
+  - facets
+  - search_api
+
