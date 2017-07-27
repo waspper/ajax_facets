@@ -31,21 +31,3 @@ ajax_facets.links_widget:
     - ajax_facets/ajax_facets.ajax_facets_base
   js:
     js/links-widget.js: {}
-
-ajax_facets.checkboxes_widget2:
-  version: 1.0
-  header: true
-  dependencies:
-    - ajax_facets/ajax_facets.ajax_facets_base
-  js:
-    js/checkboxes-widget2.js: {}
-    
-ajax_facets.ajax_facets_base2:
-  version: 1.0
-  header: true
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
-  js:
-    js/ajax-facets-base2.js: {}
