@@ -8,22 +8,6 @@ ajax_facets.ajax_facets_base:
   js:
     js/ajax-facets-base.js: {}
 
-ajax_facets.checkboxes_widget:
-  version: 1.0
-  header: true
-  dependencies:
-    - ajax_facets/ajax_facets.ajax_facets_base
-  js:
-    js/checkboxes-widget.js: {}
-
-ajax_facets.dropdown_widget:
-  version: 1.0
-  header: true
-  dependencies:
-    - ajax_facets/ajax_facets.ajax_facets_base
-  js:
-    js/dropdown-widget.js: {}
-
 ajax_facets.links_widget:
   version: 1.0
   header: true

@@ -1,0 +1,6 @@
+ajax_facets.ajax:
+  path: '/ajax-facets/ajax'
+  defaults:
+    _controller: '\Drupal\ajax_facets\Controller\AjaxFacetsController::facetView'
+  requirements:
+    _access: 'TRUE'

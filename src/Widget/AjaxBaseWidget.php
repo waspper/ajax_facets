@@ -6,6 +6,8 @@ use Drupal\facets\FacetInterface;
 use Drupal\facets\Result\Result;
 use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 
 /**
  * A base class for ajax widgets that implements most of the boilerplate.
@@ -23,6 +25,9 @@ abstract class AjaxBaseWidget extends WidgetPluginBase {
 
     $source_id = $facet->getFacetSourceId();
     $source_data = explode(':', $source_id);
+    
+    $facet_id = $facet->id();
+    
 
     $build['#attributes']['class'][] = 'js-facets-ajax-' . $source_data[1];
     $build['#attached']['drupalSettings'] = [
@@ -30,7 +35,7 @@ abstract class AjaxBaseWidget extends WidgetPluginBase {
         'view_name' => $source_data[1],
       ],
     ];
-
+    
     return $build;
   }
 
@@ -46,10 +51,11 @@ abstract class AjaxBaseWidget extends WidgetPluginBase {
    *   A renderable array of the result.
    */
   protected function buildListItems($facet, ResultInterface $result) {
-    $classes = ['facet-item'];
-
+    $facet_item_id = $this->facet->getUrlAlias() . '-' . $result->getRawValue();
+    $classes = ['facet-item', 'js-facet-item-' . $facet_item_id];
+    
     if ($children = $result->getChildren()) {
-      $items = $this->prepareLink($result);
+      $items = $this->prepareLink($result, $facet);
 
       $children_markup = [];
       foreach ($children as $child) {
@@ -64,7 +70,7 @@ abstract class AjaxBaseWidget extends WidgetPluginBase {
       }
     }
     else {
-      $items = $this->prepareLink($result);
+      $items = $this->prepareLink($result, $facet);
 
       if ($result->isActive()) {
         $items['#attributes'] = ['class' => 'is-active'];
@@ -73,9 +79,33 @@ abstract class AjaxBaseWidget extends WidgetPluginBase {
 
     $items['#attributes']['data-facet-query'] = $this->facet->getUrlAlias() . ':' . $result->getRawValue();
     $items['#wrapper_attributes'] = ['class' => $classes];
-    $items['#attributes']['data-drupal-facet-item-id'] = $this->facet->getUrlAlias() . '-' . $result->getRawValue();
+    $items['#attributes']['data-drupal-facet-item-id'] = $facet_item_id;
 
     return $items;
+  }
+  
+  /**
+   * Returns the text or link for an item.
+   *
+   * @param \Drupal\facets\Result\ResultInterface $result
+   *   A result item.
+   *
+   * @return array
+   *   The item as a render array.
+   */
+  protected function prepareLink(ResultInterface $result, FacetInterface $facet) {
+    $item = $this->buildResultItem($result);
+
+    if (!is_null($result->getUrl())) {
+      $item = [
+        '#type' => 'link',
+        '#url' => Url::fromRoute('ajax_facets.ajax', ['facet_id' => $this->facet->id(), 'filter' => $this->facet->getUrlAlias() . ':' . $result->getRawValue()]),
+        '#title' => $item,
+        '#attributes' => ['class' => 'use-ajax'],
+      ];
+    }
+
+    return $item;
   }
 
 }

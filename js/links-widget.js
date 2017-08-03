@@ -30,12 +30,6 @@
         var $link = $(this);
         $link.on('click', function (event) {
           $(this).toggleClass('active');
-          var facet_query = [];
-          $('.js-facets-ajax-links .active').each(function(){
-            facet_query.push($(this).attr('data-facet-query'));
-          });
-          Drupal.ajax_facets.ajaxView(null, facet_query);
-          event.preventDefault();
         });
       });
     });

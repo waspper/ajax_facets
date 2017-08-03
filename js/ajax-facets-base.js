@@ -8,9 +8,23 @@
   'use strict';
 
   Drupal.ajax_facets = Drupal.ajax_facets || {viewDomId: null, viewSettings: null};
-  Drupal.behaviors.facetsAjaxWidget = {
+  Drupal.ajax_facets_filters = Drupal.ajax_facets_filters || [];
+  Drupal.behaviors.AjaxFacetsWidget = {
     attach: function (context, drupalSettings) {
       Drupal.ajax_facets.attach(context, drupalSettings);
+      Drupal.AjaxCommands.prototype.AjaxFacetsReload = function(ajax, response, status) {
+        if (drupalSettings.ajaxFacets.filter) {
+          if ($.inArray(drupalSettings.ajaxFacets.filter, Drupal.ajax_facets_filters) !== -1) {
+            // Remove previously added filter.
+            Drupal.ajax_facets_filters = $(Drupal.ajax_facets_filters).not([drupalSettings.ajaxFacets.filter]).get();
+          }
+          else {
+            // Append selected filter.
+            Drupal.ajax_facets_filters.push(drupalSettings.ajaxFacets.filter);  
+          }
+        }
+        Drupal.ajax_facets.ajaxView();
+      };
     }
   };
 
@@ -37,11 +51,9 @@
    * @param {array} facet_query
    *   The query parameters.
    */
-  Drupal.ajax_facets.ajaxView = function (settings, facet_query) {
-    if (settings == null) {
-      // Needed?... Maybe we can to write extra settings directly into Drupal.ajax_facets.viewSettings.
-      settings = Drupal.ajax_facets.viewSettings;
-    }
+  //Drupal.ajax_facets.ajaxView = function (settings, facet_query) {
+  Drupal.ajax_facets.ajaxView = function () {
+    var settings = Drupal.ajax_facets.viewSettings;
     var selector = '.js-view-dom-id-' + settings.view_dom_id;
     this.$view = $(selector);
     // Retrieve the path to use for views' ajax.
@@ -66,7 +78,8 @@
     }
 
     // Add facets to query.
-    settings.f = facet_query;
+    //settings.f = facet_query;
+    settings.f = Drupal.ajax_facets_filters;
 
     this.element_settings = {
       url: ajax_path + queryString,

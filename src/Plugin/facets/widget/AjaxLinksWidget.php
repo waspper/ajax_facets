@@ -3,8 +3,6 @@
 namespace Drupal\ajax_facets\Plugin\facets\widget;
 
 use Drupal\facets\FacetInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\facets\Plugin\facets\widget\LinksWidget;
 use Drupal\facets\Result\Result;
 use Drupal\facets\Result\ResultInterface;
 use Drupal\ajax_facets\Widget\AjaxBaseWidget;
