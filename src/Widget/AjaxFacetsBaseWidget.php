@@ -12,7 +12,7 @@ use Drupal\Core\Url;
 /**
  * A base class for ajax widgets that implements most of the boilerplate.
  */
-abstract class AjaxBaseWidget extends WidgetPluginBase {
+abstract class AjaxFacetsBaseWidget extends WidgetPluginBase {
 
   /**
    * {@inheritdoc}

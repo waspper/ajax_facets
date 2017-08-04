@@ -5,7 +5,7 @@ namespace Drupal\ajax_facets\Plugin\facets\widget;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\Result\Result;
 use Drupal\facets\Result\ResultInterface;
-use Drupal\ajax_facets\Widget\AjaxBaseWidget;
+use Drupal\ajax_facets\Widget\AjaxFacetsBaseWidget;
 
 /**
  * The checkbox ajax widget.
@@ -16,7 +16,7 @@ use Drupal\ajax_facets\Widget\AjaxBaseWidget;
  *   description = @Translation("Display links, with AJAX support."),
  * )
  */
-class AjaxLinksWidget extends AjaxBaseWidget {
+class AjaxLinksWidget extends AjaxFacetsBaseWidget {
 
   /**
    * {@inheritdoc}
