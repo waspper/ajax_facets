@@ -50,7 +50,7 @@ abstract class AjaxFacetsBaseWidget extends WidgetPluginBase {
    * @return array
    *   A renderable array of the result.
    */
-  protected function buildListItems($facet, ResultInterface $result) {
+  protected function buildListItems(FacetInterface $facet, ResultInterface $result) {
     $facet_item_id = $this->facet->getUrlAlias() . '-' . $result->getRawValue();
     $classes = ['facet-item', 'js-facet-item-' . $facet_item_id];
     
@@ -66,14 +66,14 @@ abstract class AjaxFacetsBaseWidget extends WidgetPluginBase {
       $items['children'] = [$children_markup];
 
       if ($result->isActive()) {
-        $items['#attributes'] = ['class' => 'active-trail'];
+        $items['#attributes']['class'][] = 'active-trail';
       }
     }
     else {
       $items = $this->prepareLink($result, $facet);
 
       if ($result->isActive()) {
-        $items['#attributes'] = ['class' => 'is-active'];
+        $items['#attributes']['class'][] = 'is-active';
       }
     }
 
@@ -93,15 +93,15 @@ abstract class AjaxFacetsBaseWidget extends WidgetPluginBase {
    * @return array
    *   The item as a render array.
    */
-  protected function prepareLink(ResultInterface $result, FacetInterface $facet) {
+  protected function prepareLink(ResultInterface $result) {
     $item = $this->buildResultItem($result);
 
     if (!is_null($result->getUrl())) {
       $item = [
         '#type' => 'link',
-        '#url' => Url::fromRoute('ajax_facets.ajax', ['facet_id' => $this->facet->id(), 'filter' => $this->facet->getUrlAlias() . ':' . $result->getRawValue()]),
+        '#url' => Url::fromRoute('ajax_facets.ajax', ['facet_id' => $this->facet->id(),'is_active' => $item['#is_active'], 'filter' => $this->facet->getUrlAlias() . ':' . $result->getRawValue()]),
         '#title' => $item,
-        '#attributes' => ['class' => 'use-ajax'],
+        '#attributes' => ['class' => ['use-ajax']],
       ];
     }
 
